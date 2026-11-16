@@ -1,4 +1,3 @@
-// Backend-in qaytardığı səviyyə mətnlərinə görə rəng (FRONTEND_API.md, 4.5)
 export const LEVEL_CLASS = {
   'Güclü': 'level-strong',
   'Orta': 'level-medium',

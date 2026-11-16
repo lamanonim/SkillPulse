@@ -20,7 +20,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Yalnız login olmuş istifadəçilər üçün */}
+          {/* aşağıdakı səhifələr yalnız login olmuş istifadəçi üçündür */}
           <Route element={<ProtectedRoute />}>
             <Route path="/directions" element={<Directions />} />
             <Route path="/test/:direction" element={<Test />} />

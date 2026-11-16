@@ -1,5 +1,3 @@
-// Nəticə: test bitəndə POST /assessments cavabı ilə açılır.
-// Səhifə yenilənsə (state itər), son nəticə GET /progress-dən götürülür.
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import api, { errorMessage } from '../api/client';
@@ -7,7 +5,6 @@ import Loader from '../components/Loader';
 import SkillBars from '../components/SkillBars';
 import { LEVEL_CLASS } from '../components/levels';
 
-// GET /progress cavabından plan qurmaq (tapşırıqları bacarığa görə qruplaşdırır)
 function planFromProgress(progress) {
   const levels = Object.fromEntries(progress.assessment.results.map((r) => [r.skill, r.level]));
   const groups = {};
@@ -24,6 +21,7 @@ export default function Result() {
   const [loading, setLoading] = useState(!state);
   const [error, setError] = useState('');
 
+  // səhifə yenilənəndə state itir, ona görə nəticə /progress-dən götürülür
   useEffect(() => {
     if (state) return;
     api

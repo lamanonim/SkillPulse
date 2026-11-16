@@ -1,4 +1,3 @@
-// Yalnız login olmuş istifadəçilər üçün səhifələr
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Loader from './Loader';

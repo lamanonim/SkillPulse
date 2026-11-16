@@ -1,4 +1,3 @@
-// Kabinet: GET /progress, checkbox → PATCH /progress/tasks/:id/toggle
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api, { errorMessage } from '../api/client';
@@ -31,7 +30,7 @@ export default function Dashboard() {
     setBusyId(task.id);
     setError('');
     try {
-      // DİQQƏT: tasks[].id göndərilir (task_id yox)
+      // task_id yox, user_tasks.id göndərilməlidir
       const res = await api.patch(`/progress/tasks/${task.id}/toggle`);
       const tasks = data.tasks.map((t) => (t.id === task.id ? { ...t, status: res.data.task.status } : t));
       setData({ ...data, tasks, summary: summarize(tasks) });

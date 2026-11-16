@@ -1,16 +1,15 @@
-// Backend ilə bütün əlaqə buradan keçir (FRONTEND_API.md, bölmə 3)
 import axios from 'axios';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
-// Hər sorğuya token əlavə olunur
+// hər sorğuya JWT token əlavə olunur
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Qorunan route-da 401 gəlsə: tokeni sil, login səhifəsinə yönləndir
+// 401 gəlsə token silinir və login səhifəsinə yönləndirilir
 api.interceptors.response.use(
   (res) => res,
   (err) => {
@@ -24,7 +23,6 @@ api.interceptors.response.use(
   }
 );
 
-// Xətadan istifadəçiyə göstəriləcək mesajı çıxarır
 export function errorMessage(err) {
   if (!err.response) return 'Serverə qoşulmaq mümkün olmadı. İnterneti və ya serveri yoxlayın.';
   return err.response.data?.message || 'Gözlənilməz xəta baş verdi.';

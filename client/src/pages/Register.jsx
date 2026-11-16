@@ -11,7 +11,6 @@ export default function Register() {
   const [sending, setSending] = useState(false);
   const [justRegistered, setJustRegistered] = useState(false);
 
-  // Yeni qeydiyyatdan keçən testə, artıq daxil olmuş istifadəçi kabinetə gedir
   if (user) return <Navigate to={justRegistered ? '/directions' : '/dashboard'} replace />;
 
   function onChange(e) {

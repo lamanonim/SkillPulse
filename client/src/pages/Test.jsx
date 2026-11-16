@@ -1,4 +1,3 @@
-// Test: suallar bir-bir göstərilir, sonda POST /assessments
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import api, { errorMessage } from '../api/client';
@@ -9,7 +8,7 @@ export default function Test() {
   const navigate = useNavigate();
 
   const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState({}); // { questionId: "variantın mətni" }
+  const [answers, setAnswers] = useState({});
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -59,7 +58,8 @@ export default function Test() {
         direction,
         answers: Object.entries(answers).map(([questionId, answer]) => ({
           questionId: Number(questionId),
-          answer, // variantın tam mətni (indeks yox)
+          // backend variantın indeksini yox, mətnini gözləyir
+          answer,
         })),
       };
       const res = await api.post('/assessments', payload);

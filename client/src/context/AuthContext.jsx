@@ -1,4 +1,3 @@
-// İstifadəçinin login vəziyyəti bütün səhifələr üçün buradadır
 import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api/client';
 
@@ -6,9 +5,9 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // tətbiq açılanda token yoxlanılır
+  const [loading, setLoading] = useState(true);
 
-  // Tətbiq açılanda: token varsa /auth/me ilə yoxla
+  // səhifə açılanda token hələ etibarlıdırmı, /auth/me ilə yoxlanılır
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -34,7 +33,7 @@ export function AuthProvider({ children }) {
 
   async function register(name, email, password) {
     const res = await api.post('/auth/register', { name, email, password });
-    saveSession(res.data); // qeydiyyatdan sonra avtomatik daxil olur
+    saveSession(res.data);
   }
 
   function logout() {

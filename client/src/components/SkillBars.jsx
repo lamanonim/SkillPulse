@@ -1,4 +1,3 @@
-// Bacarıq faizlərini rəngli zolaqlarla göstərir
 import { LEVEL_CLASS } from './levels';
 
 export default function SkillBars({ results }) {
