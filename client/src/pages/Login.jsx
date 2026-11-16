@@ -1,0 +1,61 @@
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { errorMessage } from '../api/client';
+
+export default function Login() {
+  const { user, login } = useAuth();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+
+  if (user) return <Navigate to="/dashboard" replace />;
+
+  function onChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setSending(true);
+    setErrors({});
+    setMessage('');
+    try {
+      await login(form.email, form.password);
+      navigate('/dashboard');
+    } catch (err) {
+      setMessage(errorMessage(err));
+      setErrors(err.response?.data?.errors || {});
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <div className="container auth-page">
+      <form className="card auth-card" onSubmit={onSubmit} noValidate>
+        <h2>Daxil ol</h2>
+        <p className="muted">Hesabına daxil ol və irəliləyişini davam etdir.</p>
+
+        {message && <div className="alert">{message}</div>}
+
+        <label htmlFor="email">Email</label>
+        <input id="email" name="email" type="email" value={form.email} onChange={onChange} placeholder="ad@mail.com" required />
+        {errors.email && <small className="field-error">{errors.email}</small>}
+
+        <label htmlFor="password">Şifrə</label>
+        <input id="password" name="password" type="password" value={form.password} onChange={onChange} placeholder="••••••" required />
+        {errors.password && <small className="field-error">{errors.password}</small>}
+
+        <button className="btn btn-primary btn-block" disabled={sending}>
+          {sending ? 'Gözləyin...' : 'Daxil ol'}
+        </button>
+        <p className="muted center">
+          Hesabın yoxdur? <Link to="/register">Qeydiyyatdan keç</Link>
+        </p>
+      </form>
+    </div>
+  );
+}
