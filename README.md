@@ -37,20 +37,7 @@ SkillPulse bu prosesi vahid platformada birləşdirir:
 - Açıq və qaranlıq rejim (seçim yadda saxlanılır)
 - Mobil cihazlara uyğun dizayn
 
-## İstiqamətlər
 
-| İstiqamət | Bacarıqlar | Sual |
-|---|---|---|
-| Frontend Developer | HTML, CSS, JavaScript, React, Git | 30 |
-| Backend Developer | Node.js, Express, SQL, REST API, Veb təhlükəsizliyi | 30 |
-| UI/UX Dizayn | UI əsasları, UX araşdırma, Figma, Rəng və tipoqrafiya, Prototipləmə | 30 |
-| Data Analitika | Excel, SQL ilə analiz, Data vizualizasiya | 12 |
-| Rəqəmsal Marketinq | SMM, SEO, Marketinq analitikası | 12 |
-| QA (Testləşdirmə) | Manual testləşdirmə, Bug hesabatı, Avtomatlaşdırılmış test | 12 |
-| Mobil Developer | Mobil UX, React Native, Mobil platformalar | 12 |
-| DevOps | Linux, Docker, CI/CD | 12 |
-| Kibertəhlükəsizlik | Şəbəkə təhlükəsizliyi, OWASP Top 10, Kriptoqrafiya əsasları | 12 |
-| Layihə idarəetməsi | Agile və Scrum, Planlaşdırma, Komanda kommunikasiyası | 12 |
 
 ## Qiymətləndirmə qaydası
 
