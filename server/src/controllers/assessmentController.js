@@ -15,7 +15,7 @@ const { scoreAnswers, tasksNeeded } = require('../services/assessmentService');
  *       - in: path
  *         name: direction
  *         required: true
- *         schema: { type: string, enum: [frontend, backend] }
+ *         schema: { type: string, enum: [frontend, backend, uiux, data, marketing, qa, mobile, devops, security, pm] }
  *     responses:
  *       200:
  *         description: Sual siyahısı
