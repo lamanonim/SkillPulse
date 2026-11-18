@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import api, { errorMessage } from '../api/client';
 import Loader from '../components/Loader';
+import Icon from '../components/Icons';
+import { directionTitle } from '../components/levels';
 
 export default function Test() {
   const { direction } = useParams();
@@ -13,6 +15,7 @@ export default function Test() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [confirmSkip, setConfirmSkip] = useState(false);
 
   useEffect(() => {
     api
@@ -28,7 +31,7 @@ export default function Test() {
     return (
       <div className="container page">
         <div className="alert">{error}</div>
-        <Link to="/directions" className="btn btn-outline">Geri qayıt</Link>
+        <Link to="/directions" className="btn btn-ghost">Geri qayıt</Link>
       </div>
     );
   }
@@ -47,8 +50,8 @@ export default function Test() {
       setError('Ən azı bir suala cavab verin.');
       return;
     }
-    const unanswered = questions.length - answeredCount;
-    if (unanswered > 0 && !window.confirm(`${unanswered} suala cavab verilməyib. Onlar səhv sayılacaq. Davam edək?`)) {
+    if (questions.length - answeredCount > 0 && !confirmSkip) {
+      setConfirmSkip(true);
       return;
     }
     setSending(true);
@@ -71,13 +74,16 @@ export default function Test() {
     }
   }
 
+  const unanswered = questions.length - answeredCount;
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+
   return (
     <div className="container page narrow">
       <div className="test-head">
-        <span className="chip">{q.skill}</span>
-        <span className="muted">
-          Sual {index + 1} / {questions.length}
+        <span>
+          <strong>{directionTitle(direction)}</strong> <span className="chip" style={{ marginLeft: 8 }}>{q.skill}</span>
         </span>
+        <span className="muted">Sual {index + 1} / {questions.length}</span>
       </div>
       <div className="bar">
         <div className="bar-fill" style={{ width: `${progress}%` }} />
@@ -86,36 +92,42 @@ export default function Test() {
       <div className="card question-card">
         <h2 className="question">{q.question}</h2>
         <div className="options">
-          {q.options.map((opt) => (
+          {q.options.map((opt, i) => (
             <button
               key={opt}
               type="button"
               className={`option ${answers[q.id] === opt ? 'selected' : ''}`}
               onClick={() => choose(opt)}
             >
-              {opt}
+              <span className="key">{letters[i]}</span>
+              <span>{opt}</span>
             </button>
           ))}
         </div>
       </div>
 
       {error && <div className="alert">{error}</div>}
+      {confirmSkip && unanswered > 0 && (
+        <div className="alert">
+          {unanswered} suala cavab verilməyib, onlar səhv sayılacaq. Bitirmək üçün düyməyə yenidən bas.
+        </div>
+      )}
 
       <div className="test-nav">
-        <button className="btn btn-outline" disabled={index === 0} onClick={() => setIndex(index - 1)}>
+        <button className="btn btn-ghost" disabled={index === 0} onClick={() => setIndex(index - 1)}>
           ← Əvvəlki
         </button>
         {isLast ? (
           <button className="btn btn-primary" disabled={sending} onClick={submit}>
-            {sending ? 'Yoxlanılır...' : 'Testi bitir'}
+            {sending ? 'Yoxlanılır...' : <>Testi bitir <Icon name="check" size={17} /></>}
           </button>
         ) : (
           <button className="btn btn-primary" onClick={() => setIndex(index + 1)}>
-            Növbəti →
+            Növbəti <Icon name="arrow" size={17} />
           </button>
         )}
       </div>
-      <p className="muted center">Cavablandırılıb: {answeredCount} / {questions.length}</p>
+      <p className="test-foot">Cavablandırılıb: {answeredCount} / {questions.length}</p>
     </div>
   );
 }

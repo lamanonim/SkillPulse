@@ -9,6 +9,7 @@ import Test from './pages/Test';
 import Result from './pages/Result';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -31,9 +32,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <footer className="footer">
-        <div className="container">© {new Date().getFullYear()} SkillPulse</div>
-      </footer>
+      <Footer />
     </>
   );
 }

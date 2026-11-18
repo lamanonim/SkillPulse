@@ -5,7 +5,7 @@ export default function SkillBars({ results }) {
     <div className="skill-bars">
       {results.map((r) => (
         <div key={r.skill} className="skill-row">
-          <div className="skill-row-head">
+          <div className="row-between">
             <strong>{r.skill}</strong>
             <span className={`badge ${LEVEL_CLASS[r.level] || ''}`}>{r.level}</span>
           </div>

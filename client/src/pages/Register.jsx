@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { errorMessage } from '../api/client';
+import Icon from '../components/Icons';
 
 export default function Register() {
   const { user, register } = useAuth();
@@ -35,29 +36,35 @@ export default function Register() {
   }
 
   return (
-    <div className="container auth-page">
+    <div className="auth-page">
       <form className="card auth-card" onSubmit={onSubmit} noValidate>
-        <h2>Qeydiyyat</h2>
-        <p className="muted">Hesab yarat və bacarıqlarını ölçməyə başla.</p>
+        <h1>Hesab yarat</h1>
+        <p>Bacarıqlarını ölç və fərdi inkişaf planını al. Pulsuzdur.</p>
 
         {message && <div className="alert">{message}</div>}
 
-        <label htmlFor="name">Ad</label>
-        <input id="name" name="name" value={form.name} onChange={onChange} placeholder="Adın" required />
-        {errors.name && <small className="field-error">{errors.name}</small>}
+        <div className="field">
+          <label htmlFor="name">Ad</label>
+          <input id="name" name="name" value={form.name} onChange={onChange} placeholder="Adın" autoComplete="name" required />
+          {errors.name && <small className="field-error">{errors.name}</small>}
+        </div>
 
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" value={form.email} onChange={onChange} placeholder="ad@mail.com" required />
-        {errors.email && <small className="field-error">{errors.email}</small>}
+        <div className="field">
+          <label htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" value={form.email} onChange={onChange} placeholder="ad@mail.com" autoComplete="email" required />
+          {errors.email && <small className="field-error">{errors.email}</small>}
+        </div>
 
-        <label htmlFor="password">Şifrə</label>
-        <input id="password" name="password" type="password" value={form.password} onChange={onChange} placeholder="Ən azı 6 simvol" required />
-        {errors.password && <small className="field-error">{errors.password}</small>}
+        <div className="field">
+          <label htmlFor="password">Şifrə</label>
+          <input id="password" name="password" type="password" value={form.password} onChange={onChange} placeholder="Ən azı 6 simvol" autoComplete="new-password" required />
+          {errors.password && <small className="field-error">{errors.password}</small>}
+        </div>
 
-        <button className="btn btn-primary btn-block" disabled={sending}>
-          {sending ? 'Gözləyin...' : 'Qeydiyyatdan keç'}
+        <button className="btn btn-primary btn-lg btn-block" disabled={sending}>
+          {sending ? 'Gözləyin...' : <>Qeydiyyatdan keç <Icon name="arrow" size={18} /></>}
         </button>
-        <p className="muted center">
+        <p className="auth-switch">
           Artıq hesabın var? <Link to="/login">Daxil ol</Link>
         </p>
       </form>

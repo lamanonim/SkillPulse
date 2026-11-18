@@ -4,6 +4,8 @@ import api, { errorMessage } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import Loader from '../components/Loader';
 import SkillBars from '../components/SkillBars';
+import { DIRECTIONS, directionTitle } from '../components/levels';
+import Icon from '../components/Icons';
 
 function summarize(tasks) {
   const total = tasks.length;
@@ -45,13 +47,19 @@ export default function Dashboard() {
 
   if (!data?.assessment) {
     return (
-      <div className="container page center">
-        <h1>Salam, {user?.name}! 👋</h1>
+      <div className="container page">
+        <div className="page-head">
+          <h1>Salam, {user?.name}! 👋</h1>
+          <p>Kabinetinə xoş gəldin.</p>
+        </div>
         {error && <div className="alert">{error}</div>}
         <div className="card empty">
+          <div className="ficon"><Icon name="target" size={28} /></div>
           <h2>Hələ test verməmisən</h2>
-          <p className="muted">Bacarıqlarını ölçmək və fərdi inkişaf planı almaq üçün testə başla.</p>
-          <Link to="/directions" className="btn btn-primary">Testə başla</Link>
+          <p>Bacarıqlarını ölçmək və fərdi inkişaf planı almaq üçün bir istiqamət seç.</p>
+          <Link to="/directions" className="btn btn-primary btn-lg">
+            Testə başla <Icon name="arrow" size={18} />
+          </Link>
         </div>
       </div>
     );
@@ -62,39 +70,62 @@ export default function Dashboard() {
     (acc[t.skill] ??= []).push(t);
     return acc;
   }, {});
+  const avg = Math.round(assessment.results.reduce((n, r) => n + r.percentage, 0) / assessment.results.length);
+  const icon = DIRECTIONS.find((d) => d.id === assessment.direction)?.icon || 'target';
 
   return (
     <div className="container page">
-      <h1>Salam, {user?.name}! 👋</h1>
-      <p className="lead">
-        Son test: <strong>{assessment.direction}</strong> ·{' '}
-        {new Date(assessment.created_at).toLocaleDateString('az-AZ')}
-      </p>
+      <div className="page-head">
+        <h1>Salam, {user?.name}! 👋</h1>
+        <p>
+          Son test: <strong>{directionTitle(assessment.direction)}</strong> ·{' '}
+          {new Date(assessment.created_at).toLocaleDateString('az-AZ')}
+        </p>
+      </div>
 
       {error && <div className="alert">{error}</div>}
 
-      <div className="card progress-card">
-        <div className="skill-row-head">
-          <h3>Ümumi irəliləyiş</h3>
-          <strong>{summary.percentage}%</strong>
+      <div className="stats">
+        <div className="card stat">
+          <div className="donut" style={{ '--p': summary.percentage, '--size': '64px', '--hole': '7px' }}>
+            <span style={{ fontSize: '0.9rem' }}>{summary.percentage}%</span>
+          </div>
+          <div>
+            <strong>{summary.done} / {summary.total}</strong>
+            <small>tapşırıq tamamlanıb</small>
+          </div>
         </div>
-        <div className="bar bar-lg">
-          <div className="bar-fill level-strong" style={{ width: `${summary.percentage}%` }} />
+        <div className="card stat">
+          <div className="ficon"><Icon name={icon} /></div>
+          <div>
+            <strong>{avg}%</strong>
+            <small>test nəticəsi</small>
+          </div>
         </div>
-        <small className="muted">
-          {summary.done} / {summary.total} tapşırıq tamamlanıb
-        </small>
+        <div className="card stat">
+          <div className="ficon"><Icon name="list" /></div>
+          <div>
+            <strong>{summary.pending}</strong>
+            <small>qalan tapşırıq</small>
+          </div>
+        </div>
       </div>
 
-      <div className="result-grid">
+      <div className="dash-grid">
         <div className="card">
-          <h3>Bacarıqların</h3>
+          <h3 className="card-title">Bacarıqların</h3>
           <SkillBars results={assessment.results} />
-          <Link to="/directions" className="btn btn-outline btn-block">Testi yenidən ver</Link>
+          <Link to="/directions" className="btn btn-ghost btn-block" style={{ marginTop: 22 }}>Yeni test ver</Link>
         </div>
 
         <div className="card">
-          <h3>Tapşırıqlar</h3>
+          <div className="row-between" style={{ marginBottom: 14 }}>
+            <h3 className="card-title" style={{ margin: 0 }}>İnkişaf planı</h3>
+            <span className="badge badge-primary">{summary.percentage}% tamamlanıb</span>
+          </div>
+          <div className="bar bar-lg" style={{ marginBottom: 18 }}>
+            <div className="bar-fill" style={{ width: `${summary.percentage}%` }} />
+          </div>
           {tasks.length === 0 ? (
             <p className="muted">Planında tapşırıq yoxdur, bütün bacarıqlarda güclüsən! 🎉</p>
           ) : (
@@ -111,7 +142,7 @@ export default function Dashboard() {
                     />
                     <span>
                       <strong>{t.title}</strong>
-                      <small className="muted">{t.description}</small>
+                      <small>{t.description}</small>
                     </span>
                   </label>
                 ))}

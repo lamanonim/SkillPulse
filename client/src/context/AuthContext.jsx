@@ -5,15 +5,13 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loggedOut, setLoggedOut] = useState(false);
+  const [loading, setLoading] = useState(() => Boolean(localStorage.getItem('token')));
 
   // səhifə açılanda token hələ etibarlıdırmı, /auth/me ilə yoxlanılır
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
     api
       .get('/auth/me')
       .then((res) => setUser(res.data.user))
@@ -23,6 +21,7 @@ export function AuthProvider({ children }) {
 
   function saveSession(data) {
     localStorage.setItem('token', data.token);
+    setLoggedOut(false);
     setUser(data.user);
   }
 
@@ -38,11 +37,12 @@ export function AuthProvider({ children }) {
 
   function logout() {
     localStorage.removeItem('token');
+    setLoggedOut(true);
     setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, loggedOut, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

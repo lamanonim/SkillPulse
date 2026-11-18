@@ -1,10 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="az" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
+    <meta name="description" content="SkillPulse — bacarıqlarını qiymətləndir, çatışmayan bilikləri gör və fərdi inkişaf planı al." />
+    <title>SkillPulse — karyera yolunu bacarıqlarınla qur</title>
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
