@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./docs/swagger');
 
 const authRoutes = require('./routes/authRoutes');
 const assessmentRoutes = require('./routes/assessmentRoutes');
@@ -34,7 +36,29 @@ app.use(
 
 app.use(express.json({ limit: '100kb' }));
 
+// ---------- Swagger ----------
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { customSiteTitle: 'SkillPulse API' }));
+app.get('/swagger.json', (req, res) => res.json(swaggerSpec));
+
 // ---------- Route-lar ----------
+/**
+ * @openapi
+ * /api/health:
+ *   get:
+ *     tags: [System]
+ *     summary: Server işləyirmi?
+ *     responses:
+ *       200:
+ *         description: Server işləyir
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 status: { type: string, example: ok }
+ *                 time: { type: string, format: date-time }
+ */
 app.get('/api/health', (req, res) => {
   res.json({ success: true, status: 'ok', time: new Date().toISOString() });
 });
